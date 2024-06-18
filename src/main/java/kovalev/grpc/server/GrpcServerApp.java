@@ -1,26 +1,29 @@
 package kovalev.grpc.server;
 
-import kovalev.grpc.server.dao.UserRepository;
-import kovalev.grpc.server.entity.User;
+import io.grpc.Server;
+import io.grpc.ServerBuilder;
+import kovalev.grpc.server.service.UserServiceImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import java.util.Optional;
+import java.io.IOException;
 
 @SpringBootApplication
 public class GrpcServerApp {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException, InterruptedException {
 		ConfigurableApplicationContext context = SpringApplication.run(GrpcServerApp.class, args);
 
-		UserRepository repository = context.getBean(UserRepository.class);
+		Server server = ServerBuilder.forPort(8080)
+				.addService(context.getBean(UserServiceImpl.class))
+				.build();
 
-		Optional<User> byId = repository.findById(1L);
+		server.start();
 
-		User user = byId.get();
+		System.out.println("Server UP!!!");
 
-		System.out.println(user);
+		server.awaitTermination();
 	}
 
 }
