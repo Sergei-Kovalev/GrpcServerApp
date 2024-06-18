@@ -1,10 +1,10 @@
-package kovalev.GrpcServerApp;
+package kovalev.grpc.server;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class GrpcServerAppApplicationTests {
+class GrpcServerAppTests {
 
 	@Test
 	void contextLoads() {
