@@ -6,6 +6,6 @@ public class UserNotFoundException extends RuntimeException {
     }
 
     public static UserNotFoundException of(Class<?> clazz, Object field) {
-        return new UserNotFoundException("Not found " + clazz + " with field " + field + " in DB");
+        return new UserNotFoundException("Not found " + clazz.getSimpleName() + " with field " + field + " in DB");
     }
 }

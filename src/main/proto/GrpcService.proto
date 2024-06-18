@@ -6,7 +6,7 @@ message FindByIDRequest {
   int64 id = 1;
 }
 
-message FindByIDResponse {
+message SuccessFindByID {
   int64 id = 1;
   string name = 2;
   string surname = 3;
@@ -14,6 +14,17 @@ message FindByIDResponse {
   int32 age = 5;
   string passport_series = 6;
   string passport_number = 7;
+}
+
+message ErrorFindByID {
+  string error_description = 1;
+}
+
+message FindByIDResponse {
+  oneof response {
+    SuccessFindByID success_response = 1;
+    ErrorFindByID error_response = 2;
+  }
 }
 
 service UserService {

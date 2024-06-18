@@ -2,7 +2,7 @@ package kovalev.grpc.server;
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
-import kovalev.grpc.server.service.UserServiceImpl;
+import kovalev.grpc.server.service.ServerServiceImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -16,7 +16,7 @@ public class GrpcServerApp {
 		ConfigurableApplicationContext context = SpringApplication.run(GrpcServerApp.class, args);
 
 		Server server = ServerBuilder.forPort(8080)
-				.addService(context.getBean(UserServiceImpl.class))
+				.addService(context.getBean(ServerServiceImpl.class))
 				.build();
 
 		server.start();
