@@ -1,4 +1,4 @@
-package kovalev.grpc.server.service;
+package kovalev.grpc.server.service.impl;
 
 import com.sample.GrpcService;
 import com.sample.UserServiceGrpc;
@@ -6,13 +6,14 @@ import io.grpc.stub.StreamObserver;
 import kovalev.grpc.server.dao.UserRepository;
 import kovalev.grpc.server.entity.User;
 import kovalev.grpc.server.exception.UserNotFoundException;
+import kovalev.grpc.server.service.ServerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-public class ServerServiceImpl extends UserServiceGrpc.UserServiceImplBase {
+public class ServerServiceImpl extends UserServiceGrpc.UserServiceImplBase implements ServerService {
 
     @Autowired
     UserRepository repository;
@@ -24,6 +25,16 @@ public class ServerServiceImpl extends UserServiceGrpc.UserServiceImplBase {
         Optional<User> userOptional = repository.findById(request.getId());
 
         GrpcService.FindByIDResponse.Builder builder = GrpcService.FindByIDResponse.newBuilder();
+
+        selectionOfTypeAndRequestFilling(request, userOptional, builder);
+
+        GrpcService.FindByIDResponse response = builder.build();
+
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    private static void selectionOfTypeAndRequestFilling(GrpcService.FindByIDRequest request, Optional<User> userOptional, GrpcService.FindByIDResponse.Builder builder) {
         if (userOptional.isEmpty()) {
             GrpcService.ErrorFindByID errorFindByID = GrpcService.ErrorFindByID
                     .newBuilder()
@@ -48,10 +59,5 @@ public class ServerServiceImpl extends UserServiceGrpc.UserServiceImplBase {
 
             builder.setSuccessResponse(successFindByID);
         }
-
-        GrpcService.FindByIDResponse response = builder.build();
-
-        responseObserver.onNext(response);
-        responseObserver.onCompleted();
     }
 }
