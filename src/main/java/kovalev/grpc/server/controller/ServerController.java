@@ -3,7 +3,7 @@ package kovalev.grpc.server.controller;
 import io.grpc.BindableService;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
-import kovalev.grpc.server.service.ServerService;
+import kovalev.grpc.server.service.grpc.ServerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 

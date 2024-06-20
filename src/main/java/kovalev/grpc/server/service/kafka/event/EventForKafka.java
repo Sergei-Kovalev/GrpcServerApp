@@ -1,4 +1,4 @@
-package kovalev.grpc.server.service.event;
+package kovalev.grpc.server.service.kafka.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
