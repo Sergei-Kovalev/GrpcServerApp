@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 @Service
 public class ServerServiceImpl extends UserServiceGrpc.UserServiceImplBase implements ServerService {
@@ -42,6 +43,7 @@ public class ServerServiceImpl extends UserServiceGrpc.UserServiceImplBase imple
 
     private void selectionOfTypeAndRequestFilling(GrpcService.FindByIDRequest request, Optional<User> userOptional, GrpcService.FindByIDResponse.Builder builder) {
         if (userOptional.isEmpty()) {
+            System.out.println("User with id = " + request.getId() + " is not present in the Database");
 
             GrpcService.ErrorFindByID errorFindByID = constructErrorResponse(request);
 
@@ -59,10 +61,14 @@ public class ServerServiceImpl extends UserServiceGrpc.UserServiceImplBase imple
     }
 
     private void sendMessageToKafkaBroker(User user) {
-        kafkaProducerService.sendMessageAboutRequestToKafka(EventForKafka.builder()
-                .userID(user.getId())
-                .requestTime(LocalDateTime.now())
-                .build());
+        try {
+            kafkaProducerService.sendMessageAboutRequestToKafka(EventForKafka.builder()
+                    .userID(user.getId())
+                    .requestTime(LocalDateTime.now())
+                    .build());
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static GrpcService.SuccessFindByID constructSuccessfullyResponse(User user) {
