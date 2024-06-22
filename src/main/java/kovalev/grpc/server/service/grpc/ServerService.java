@@ -1,4 +1,4 @@
-package kovalev.grpc.server.service;
+package kovalev.grpc.server.service.grpc;
 
 import com.sample.GrpcService;
 import io.grpc.stub.StreamObserver;
