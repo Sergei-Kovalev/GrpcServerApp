@@ -14,6 +14,8 @@ import java.util.concurrent.ExecutionException;
 @Service
 public class KafkaProducerServiceImpl implements KafkaProducerService {
 
+    public static final String TOPIC_NAME = "requested-users-from-server-db";
+    public static final String TOPIC_KEYWORD = "No matter";
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
@@ -23,7 +25,7 @@ public class KafkaProducerServiceImpl implements KafkaProducerService {
     public void sendMessageAboutRequestToKafka(EventForKafka eventForKafka)
             throws ExecutionException, InterruptedException {
         SendResult<String, EventForKafka> result =
-                kafkaTemplate.send("requested-users-from-server-db", "No matter", eventForKafka).get();
+                kafkaTemplate.send(TOPIC_NAME, TOPIC_KEYWORD, eventForKafka).get();
 
         LOGGER.info("Message sent successfully to: topic {}, partition {}, offset {}",
                 result.getRecordMetadata().topic(),
