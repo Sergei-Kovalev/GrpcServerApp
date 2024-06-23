@@ -1,0 +1,6 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changeset/v-1-0/ddl/23.06.2024-create-table-users--1.sql
+
+  - include:
+      file: db/changelog/changeset/v-1-0/dml/23.06.2024-table-data-users--1.sql
